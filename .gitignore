@@ -1,0 +1,6 @@
+NetflixGPT-chinese
+NetflixGPT-english
+*.bin
+.ipynb_checkpoints
+__pycache__
+
