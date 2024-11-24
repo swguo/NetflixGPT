@@ -219,12 +219,19 @@ The project leverages the **Netflix Titles Dataset** available on [Kaggle](https
 - **Description**: A brief description or summary of the content.
 - **Other Columns**: The original dataset includes additional metadata, such as genre, type (movie or TV show), release year, etc., but this project only uses the `title` and `description` columns.
 
-### Preprocessing
+## How to Access the Dataset
 
-Before training, the dataset is preprocessed as follows:
-1. **Column Selection**: Only the `title` and `description` columns are retained.
-2. **Data Cleaning**: Remove entries with missing values in either column.
-3. **Dataset Split**: Split the data into training and test sets (80% training, 20% testing).
+To use the dataset, follow these steps:
+
+1. Visit the [Kaggle Notebook Link](https://www.kaggle.com/code/nulldata/fine-tuning-gpt-2-to-generate-netlfix-descriptions?select=netflix_titles.csv).
+2. Download the `netflix_titles.csv` file.
+3. Save the file in the `data/` directory of this project.
+
+---
+
+### How to Use the Dataset
+
+The translated dataset, `netflix_zhcn.csv`, is included in the `data/` directory of this repository. If you wish to work with the original English dataset or use a different language, you can preprocess the data using the same methodology described above.
 
 ### Example Data Format
 
@@ -235,14 +242,30 @@ Stranger Things,A group of kids uncovers supernatural mysteries while searching 
 The Crown,This drama chronicles the life of Queen Elizabeth II and the political and personal events that shaped her reign.
 ```
 
+### Data Preprocessing
+
+1. **Original Dataset**:
+   - The original dataset, `netflix_titles.csv`, was sourced from [Kaggle](https://www.kaggle.com/code/nulldata/fine-tuning-gpt-2-to-generate-netlfix-descriptions?select=netflix_titles.csv).
+   - This dataset contains Netflix titles and their English descriptions.
+
+2. **Translation to Traditional Chinese**:
+   - The dataset used in this project, `data/netflix_zhcn.csv`, is a Traditional Chinese version of the original dataset.
+   - The English descriptions were translated into Simplified Chinese using GPT-4 and further converted into Traditional Chinese for better localization and relevance to the target audience.
+
+3. **Final Dataset**:
+   - The final dataset includes the following fields:
+     - **`title`**: The Netflix title in Traditional Chinese.
+     - **`content`**: The description of the Netflix content in Traditional Chinese.
+   - Example:
+     ```csv
+     title,content
+     精神病特工,這是一部描述特工執行任務的驚悚片。
+     追星女孩,一個女孩夢想見到她的偶像並踏上了旅程。
+     ```
+### Dataset Splitting
+
+The dataset is split into training and test sets:
+- **Training Set**: 80% of the data.
+- **Test Set**: 20% of the data.
 ---
 
-## How to Access the Dataset
-
-To use the dataset, follow these steps:
-
-1. Visit the [Kaggle Notebook Link](https://www.kaggle.com/code/nulldata/fine-tuning-gpt-2-to-generate-netlfix-descriptions?select=netflix_titles.csv).
-2. Download the `netflix_titles.csv` file.
-3. Save the file in the `data/` directory of this project.
-
----
