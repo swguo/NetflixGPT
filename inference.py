@@ -32,7 +32,7 @@ def generate_description(model, tokenizer, title, strategy="greedy", max_length=
     generated_text = generated_text.replace(" ","")
     return generated_text.replace(input_text, "").strip()
 
-def inference(test_path, model_path, output_path, strategy, num, num_beams):
+def inference(test_path, model_path, output_path, strategy, num, num_beams, max_len):
 
     # Detect if GPU is available
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -52,7 +52,7 @@ def inference(test_path, model_path, output_path, strategy, num, num_beams):
     for _, row in tqdm(test_data.iterrows(),total=len(test_data)):
         title = row['title']
         description = row['content']
-        generated = generate_description(model, tokenizer, title, strategy=strategy, num_beams=num_beams,device=device)
+        generated = generate_description(model, tokenizer, title, strategy=strategy, max_length=max_len, num_beams=num_beams,device=device)
         results.append({"title": title,"description":description, "generated_description": generated})
     
     result_df = pd.DataFrame(results)
@@ -65,10 +65,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run inference on a test dataset.")
     parser.add_argument("--test_path", type=str, required=True, help="Path to the test dataset.")
     parser.add_argument("--model_path", type=str, required=True, help="Path to the trained model.")
+    parser.add_argument("--max_len", type=int, default=128, help="Max token length.")
     parser.add_argument("--output_path", type=str, required=True, help="Path to save the generated results.")
     parser.add_argument("--strategy", type=str, choices=["greedy", "beam"], default="greedy", help="Generation strategy: 'greedy' or 'beam'.")
     parser.add_argument("--num", type=int, default=None, help="Number of test")
     parser.add_argument("--num_beams", type=int, default=3, help="Number of beams for beam search (only used if strategy is 'beam').")
 
     args = parser.parse_args()
-    inference(args.test_path, args.model_path, args.output_path, args.strategy, args.num, args.num_beams)
+    inference(args.test_path, args.model_path, args.output_path, args.strategy, args.num, args.num_beams, args.max_len)

@@ -93,12 +93,15 @@ Ensure your dataset is saved as `data/netflix_zhcn.csv`. You can split it into t
 #### **a. Model Training (`main.py`)**
 
 Fine-tune the GPT-2 model on your Netflix dataset. Customize training parameters through command-line arguments.
-
+```bash
+pip install datasets
+```
 ##### Usage:
 
 ```bash
 python main.py --data_path 'data/netflix_zhcn.csv' \
 --output_dir './NetflixGPT-chinese' \
+--max_len 128 \
 --num_train_epochs 5 \
 --batch_size 16
 ```
@@ -106,6 +109,7 @@ python main.py --data_path 'data/netflix_zhcn.csv' \
 ##### Arguments:
 
 - `--data_path`: Path to the input dataset (CSV file).
+- `--max_len`: Max token length.
 - `--output_dir`: Directory to save the trained model.
 - `--num_train_epochs`: Number of epochs for training (default: 3).
 - `--batch_size`: Batch size for training and evaluation (default: 8).
@@ -121,8 +125,9 @@ Generate descriptions for Netflix titles using the fine-tuned model. Choose betw
 ```bash
 python inference.py --test_path 'data/netflix_test_zhcn.csv' \
 --model_path './NetflixGPT-chinese' \
+--max_len 128 \
 --output_path 'infr_result.csv' \
---strategy 'greedy' \ 
+--strategy 'greedy' \
 --num 100
 ```
 
@@ -130,6 +135,7 @@ python inference.py --test_path 'data/netflix_test_zhcn.csv' \
 
 - `--test_path`: Path to the test dataset (CSV file).
 - `--model_path`: Path to the trained model directory.
+- `--max_len`: Max token length.
 - `--output_path`: File to save the generated descriptions.
 - `--strategy`: Text generation strategy. Choose between:
   - `greedy`: Generate text deterministically by selecting the most probable next token at each step.
