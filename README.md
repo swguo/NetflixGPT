@@ -204,3 +204,45 @@ python demo.py
 1. Support for multilingual datasets.
 2. Add functionality to input custom titles in the Gradio demo.
 3. Allow real-time adjustment of generation parameters (e.g., temperature, top-k, top-p).
+
+Here’s how to incorporate the dataset information into your `README.md`:
+
+---
+
+## Dataset Information
+
+The project leverages the **Netflix Titles Dataset** available on [Kaggle](https://www.kaggle.com/code/nulldata/fine-tuning-gpt-2-to-generate-netlfix-descriptions?select=netflix_titles.csv).
+
+### Dataset Features
+
+- **Title**: The title of the Netflix content.
+- **Description**: A brief description or summary of the content.
+- **Other Columns**: The original dataset includes additional metadata, such as genre, type (movie or TV show), release year, etc., but this project only uses the `title` and `description` columns.
+
+### Preprocessing
+
+Before training, the dataset is preprocessed as follows:
+1. **Column Selection**: Only the `title` and `description` columns are retained.
+2. **Data Cleaning**: Remove entries with missing values in either column.
+3. **Dataset Split**: Split the data into training and test sets (80% training, 20% testing).
+
+### Example Data Format
+
+```csv
+title,description
+Breaking Bad,A high school chemistry teacher turned methamphetamine producer navigates the drug trade with his former student.
+Stranger Things,A group of kids uncovers supernatural mysteries while searching for their missing friend in a small town.
+The Crown,This drama chronicles the life of Queen Elizabeth II and the political and personal events that shaped her reign.
+```
+
+---
+
+## How to Access the Dataset
+
+To use the dataset, follow these steps:
+
+1. Visit the [Kaggle Notebook Link](https://www.kaggle.com/code/nulldata/fine-tuning-gpt-2-to-generate-netlfix-descriptions?select=netflix_titles.csv).
+2. Download the `netflix_titles.csv` file.
+3. Save the file in the `data/` directory of this project.
+
+---
