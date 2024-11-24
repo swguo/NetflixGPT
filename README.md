@@ -50,8 +50,8 @@ Ensure you have Python 3.8 or higher installed.
 #### Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/netflix-gpt.git
-cd netflix-gpt
+git clone https://github.com/swguo/NetflixGPT.git
+cd NetflixGPT
 ```
 
 #### Install Dependencies
