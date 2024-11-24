@@ -1,125 +1,206 @@
-# NetflixGPT
+Here is a formal and detailed `README.md` for your NetflixGPT project:
 
-NetflixGPT is a multi-language text generator based on the GPT-2 model. It is designed to generate Netflix show descriptions in both English and Chinese. The project provides training, inference, and evaluation scripts with modular structures for both languages.
+---
+
+# NetflixGPT: A Netflix Title Description Generator
+
+NetflixGPT is a text generation project powered by GPT-2, fine-tuned to generate descriptive summaries for Netflix titles. The project includes modules for training, inference, evaluation, and interactive demonstration, enabling users to explore the capabilities of a fine-tuned language model.
+
+This repository provides scripts for model training, text generation, evaluation using BLEU and ROUGE metrics, and an interactive Gradio-based application for live text generation.
+
+---
+
+## Project Features
+
+- **Fine-tuned GPT-2 Model**: Custom-trained on Netflix title and description data.
+- **Multiple Generation Modes**:
+  - **Greedy decoding** for deterministic text generation.
+  - **Beam search** for diverse and optimized output.
+- **Evaluation Metrics**: Comprehensive assessment using BLEU and ROUGE scores.
+- **Interactive Demo**: A Gradio interface to explore text generation with real-time results.
+
+---
 
 ## Directory Structure
 
-```
+```plaintext
 .
-├── data/                           # Directory for storing datasets
-├── eval.ipynb                      # Notebook for model evaluation
-├── Infernece_en.ipynb              # Notebook for English inference
-├── Infernece_zhcn.ipynb            # Notebook for Chinese inference
-├── NetflixGPT-chinese/             # Files related to the Chinese GPT model
-├── NetflixGPT-english/             # Files related to the English GPT model
-├── Train_en.ipynb                  # Notebook for training the English model
-├── Train_zhcn.ipynb                # Notebook for training the Chinese model
-└── README.md                       # Project documentation
+├── data/                     # Directory for dataset files
+│   ├── netflix_zhcn.csv      # Training dataset (Netflix titles and descriptions)
+│   ├── netflix_test_zhcn.csv # Test dataset
+├── NetflixGPT-chinese/       # Directory for trained model outputs
+├── main.py                   # Script for model training
+├── inference.py              # Script for generating descriptions
+├── eval.py                   # Script for evaluating generated descriptions
+├── demo.py                   # Script for interactive demo using Gradio
+├── requirements.txt          # List of dependencies
+├── README.md                 # Project documentation
 ```
 
 ---
 
-## Features
+## How to Use
 
-- **Multi-language Support**: Includes separate workflows for English and Chinese GPT models.
-- **Modular Design**: Model files for English and Chinese are separated into `NetflixGPT-english` and `NetflixGPT-chinese` directories for clarity.
-- **Reproducibility**: Training, inference, and evaluation workflows are provided through Jupyter Notebooks for easy replication.
+### 1. Installation
 
----
+#### Prerequisites
 
-## Dataset
+Ensure you have Python 3.8 or higher installed.
 
-The dataset used in this project is sourced from [Kaggle - Netflix Shows](https://www.kaggle.com/datasets/shivamb/netflix-shows).
+#### Clone the Repository
 
-### Dataset Description
+```bash
+git clone https://github.com/your-username/netflix-gpt.git
+cd netflix-gpt
+```
 
-The dataset contains information about Netflix shows, including titles and descriptions. It has been adapted for this project to support both English and Chinese text generation tasks.
+#### Install Dependencies
 
----
-
-## Getting Started
-
-### 1. Install Dependencies
-
-Ensure Python 3.8 or later is installed, and use the following command to install required dependencies:
+Install the required libraries using `pip`:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-**`requirements.txt` Example:**
+**`requirements.txt`**:
 
-```text
-transformers
+```plaintext
 torch
-tqdm
+transformers
 gradio
 nltk
 rouge-score
 ```
 
-### 2. Prepare Data
+---
 
-Place your dataset files in the `data/` directory. The dataset should be formatted as follows:
+### 2. Dataset Preparation
 
-- **English Dataset**: Titles and descriptions in English.
-- **Chinese Dataset**: Titles and descriptions in Chinese.
+The dataset must contain Netflix titles and their corresponding descriptions. The repository assumes a dataset structure like this:
 
-Example:
-
-**English Dataset (CSV):**
 ```csv
-title,description
-Stranger Things,A group of kids discover supernatural events in their town.
-Breaking Bad,A high school teacher turns to cooking meth after a cancer diagnosis.
+title,content
+精神病特工,一位特工在驚悚的旅程中揭開神秘謎團。
+追星女孩,一位女孩為追逐她的偶像踏上了夢幻的旅程。
 ```
 
-**Chinese Dataset (CSV):**
-```csv
-標題,描述
-精神病特工,一名特工陷入了神秘的精神謎團。
-追星女孩,一個女孩踏上了追逐明星夢想的旅程。
+Ensure your dataset is saved as `data/netflix_zhcn.csv`. You can split it into training and test sets manually or use `main.py` for automatic handling.
+
+---
+
+### 3. Scripts
+
+#### **a. Model Training (`main.py`)**
+
+Fine-tune the GPT-2 model on your Netflix dataset. Customize training parameters through command-line arguments.
+
+##### Usage:
+
+```bash
+python main.py --data_path 'data/netflix_zhcn.csv' \
+--output_dir './NetflixGPT-chinese' \
+--num_train_epochs 5 \
+--batch_size 16
 ```
 
----
+##### Arguments:
 
-### 3. Training
-
-#### Train the English Model
-
-Run `Train_en.ipynb` to fine-tune the English GPT model with your dataset. You can adjust training parameters like `num_train_epochs` and `batch_size` as needed.
-
-#### Train the Chinese Model
-
-Run `Train_zhcn.ipynb` to fine-tune the Chinese GPT model using the Chinese dataset.
+- `--data_path`: Path to the input dataset (CSV file).
+- `--output_dir`: Directory to save the trained model.
+- `--num_train_epochs`: Number of epochs for training (default: 3).
+- `--batch_size`: Batch size for training and evaluation (default: 8).
 
 ---
 
-### 4. Inference
+#### **b. Inference (`inference.py`)**
 
-#### English Inference
+Generate descriptions for Netflix titles using the fine-tuned model. Choose between greedy decoding or beam search.
 
-Run `Infernece_en.ipynb` to load the trained English model and generate show descriptions by providing a title as input.
+##### Usage:
 
-#### Chinese Inference
+```bash
+python inference.py --test_path 'data/netflix_test_zhcn.csv' \
+--model_path './NetflixGPT-chinese' \
+--output_path 'infr_result.csv' \
+--strategy 'greedy' \ 
+--num 100
+```
 
-Run `Infernece_zhcn.ipynb` to load the trained Chinese model and generate show descriptions in Chinese.
+##### Arguments:
+
+- `--test_path`: Path to the test dataset (CSV file).
+- `--model_path`: Path to the trained model directory.
+- `--output_path`: File to save the generated descriptions.
+- `--strategy`: Text generation strategy. Choose between:
+  - `greedy`: Generate text deterministically by selecting the most probable next token at each step.
+  - `beam`: Use beam search for more diverse and optimized text generation.
+- `--num`: Number of examples to process from the test dataset. If not provided, all examples in the dataset will be processed.
+- `--num_beams`: Number of beams for beam search (only applicable in `beam` mode).
+
+---
+
+#### **c. Evaluation (`eval.py`)**
+
+Evaluate the generated descriptions against the ground truth using BLEU and ROUGE metrics.
+```bash
+pip install jieba nltk rouge-score
+```
+##### Usage:
+
+```bash
+python eval.py --generated_path 'infr_result.csv' \
+--test_path 'data/netflix_test_zhcn.csv' \
+--num  100 \
+--lang 'zh'
+```
+
+##### Arguments:
+
+- `--generated_path`: Path to the file containing generated descriptions.
+- `--test_path`: Path to the test dataset (CSV file).
+- `--num`: Number of test examples to evaluate. If not provided, all examples in the dataset will be evaluated.
+- `--lang`: Language of the sentences to evaluate:
+  - `zh`: For Chinese (uses Jieba for tokenization).
+  - `en`: For English (uses whitespace-based tokenization).
+##### Output:
+
+- **BLEU Scores**: BLEU-1, BLEU-2, BLEU-3, BLEU-4
+- **ROUGE Scores**: ROUGE-1, ROUGE-2, ROUGE-L
 
 ---
 
-### 5. Evaluation
+#### **d. Interactive Demo (`demo.py`)**
 
-Run `eval.ipynb` to evaluate the model's performance using metrics such as BLEU and ROUGE. The notebook includes pre-defined functions for comparing generated and reference descriptions.
+Explore the model's capabilities through a user-friendly Gradio interface. Select titles and generation modes, and view the generated descriptions in real-time.
+
+```bash
+pip install gradio
+```
+##### Usage:
+
+```bash
+python demo.py
+```
+
+##### Features:
+
+- Dropdown menu for title selection (e.g., `精神病特工`, `追星女孩`, `非法女人`).
+- Radio buttons for choosing generation mode (`greedy` or `beam search`).
+
+**Example Interaction**:
+
+- **Input**:
+  - Title: `精神病特工`
+  - Mode: `greedy` or `beam`
+- **Output**:
+  ```
+  A secret agent uncovers shocking truths while navigating the dangers of espionage.
+  ```
 
 ---
 
-## Parameters
+## Future Improvements
 
-You can adjust the following parameters for fine-tuning and inference:
-
-- **`max_length`**: Controls the maximum length of the generated text, including the input.
-- **`top_k`**: Limits the number of highest-probability tokens to consider during generation.
-- **`temperature`**: Adjusts the randomness of text generation; lower values make the output more deterministic.
-- **`num_train_epochs`**: Specifies the number of training epochs.
-
----
+1. Support for multilingual datasets.
+2. Add functionality to input custom titles in the Gradio demo.
+3. Allow real-time adjustment of generation parameters (e.g., temperature, top-k, top-p).
